@@ -14,12 +14,24 @@ inputs:
       Reporter of reviewdog command [github-pr-check,github-pr-review].
       Default is github-pr-check.
     default: 'github-pr-check'
+  working_directory:
+    description: |
+      Directory to run the action on, from the repo root.
+      Default is . ( root of the repository)
+    default: '.'
   flags:
     description: |
       List of arguments to send to tfsec
       For the output to be parsable by reviewdog --format=checkstyle is enforced
       Default is blank.
     default: ''
+
+outputs:
+  tfsec-return-code:
+    description: 'tfsec command return code'
+  reviewdog-return-code:
+    description: 'reviewdog command return code'
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -27,6 +39,7 @@ runs:
     - ${{ inputs.github_token }}
     - ${{ inputs.level }}
     - ${{ inputs.reporter }}
+    - ${{ inputs.working_directory }}
     - ${{ inputs.flags }}
 branding:
   icon: 'edit'
