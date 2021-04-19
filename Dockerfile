@@ -14,5 +14,4 @@ RUN wget -O - -q "$(wget -q https://api.github.com/repos/liamg/tfsec/releases/la
     && install tfsec /usr/local/bin/
 
 COPY entrypoint.sh /entrypoint.sh
-
 ENTRYPOINT ["/entrypoint.sh"]
