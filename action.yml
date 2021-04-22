@@ -6,45 +6,75 @@ inputs:
   github_token:
     description: 'GITHUB_TOKEN'
     required: true
-  level:
-    description: 'Report level for reviewdog [info,warning,error]'
-    default: 'error'
-  reporter:
-    description: |
-      Reporter of reviewdog command [github-pr-check,github-pr-review].
-      Default is github-pr-check.
-    default: 'github-pr-check'
-  filter_mode:
-    description: |
-      Filtering for the reviewdog command [added,diff_context,file,nofilter].
-      Default is added.
-    default: 'added'
-  fail_on_error:
-    description: |
-      Exit code for reviewdog when errors are found [true,false]
-      Default is `false`.
-    default: 'false'
   working_directory:
     description: |
       Directory to run the action on, from the repo root.
       Default is . ( root of the repository)
     default: '.'
-  flags:
+    required: false
+  reviewdog_log_level:
+    description: 'Report level for reviewdog [info,warning,error]'
+    default: 'error'
+    required: false
+  reviewdog_reporter:
+    description: |
+      Reporter of reviewdog command [github-pr-check,github-pr-review].
+      Default is github-pr-check.
+    default: 'github-pr-check'
+    required: false
+  reviewdog_filter_mode:
+    description: |
+      Filtering for the reviewdog command [added,diff_context,file,nofilter].
+      Default is added.
+    default: 'added'
+    required: false
+  reviewdog_fail_on_error:
+    description: |
+      Exit code for reviewdog when errors are found [true,false]
+      Default is `false`.
+    default: 'false'
+    required: false
+  reviewdog_flags:
+    description: 'Additional reviewdog flags'
+    default: ''
+    required: false
+  tfsec_flags:
     description: |
       List of arguments to send to tfsec
       For the output to be parsable by reviewdog --format=checkstyle is enforced
       Default is blank.
     default: ''
+    required: false
 
 outputs:
   tfsec-return-code:
     description: 'tfsec command return code'
+    value: ${{ steps.tfsec.outputs.tfsec-return-code }}
   reviewdog-return-code:
     description: 'reviewdog command return code'
+    value: ${{ steps.tfsec.outputs.reviewdog-return-code }}
 
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: 'composite'
+  steps:
+    - run: $GITHUB_ACTION_PATH/script.sh
+      id: tfsec
+      shell: bash
+      env:
+        # We may want to allow specifying reviewdog version as
+        # action's input, but let's start with hard coded latest stable version for reviewdog
+        REVIEWDOG_VERSION: v0.11.0
+        # INPUT_<VARIABLE_NAME> is not available in Composite run steps
+        # https://github.community/t/input-variable-name-is-not-available-in-composite-run-steps/127611
+        INPUT_GITHUB_TOKEN: ${{ inputs.github_token }}
+        INPUT_WORKING_DIRECTORY: ${{ inputs.working_directory }}
+        INPUT_REVIEWDOG_LOG_LEVEL: ${{ inputs.reviewdog_log_level }}
+        INPUT_REVIEWDOG_REPORTER: ${{ inputs.reviewdog_reporter }}
+        INPUT_REVIEWDOG_FILTER_MODE: ${{ inputs.reviewdog_filter_mode }}
+        INPUT_REVIEWDOG_FAIL_ON_ERROR: ${{ inputs.reviewdog_fail_on_error }}
+        INPUT_REVIEWDOG_FLAGS: ${{ inputs.reviewdog_flags }}
+        INPUT_TFSEC_FLAGS: ${{ inputs.tfsec_flags }}
+
 branding:
   icon: 'edit'
   color: 'gray-dark'

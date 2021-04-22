@@ -60,6 +60,11 @@ The default is `false`.
 
 See [reviewdog doccumentation for exit codes](https://github.com/reviewdog/reviewdog/tree/master#exit-codes) for details.
 
+### `reviewdog_flags`
+
+Optional. Additional reviewdog flags. Useful for debugging errors, when it can be set to `-tee`.
+The default is ``.
+
 ### `working_directory`
 
 Optional. Directory to run the action on, from the repo root.
@@ -111,13 +116,14 @@ jobs:
 ### Release
 
 #### [haya14busa/action-bumpr](https://github.com/haya14busa/action-bumpr)
+
 You can bump version on merging Pull Requests with specific labels (bump:major,bump:minor,bump:patch).
 Pushing tag manually by yourself also work.
 
 #### [haya14busa/action-update-semver](https://github.com/haya14busa/action-update-semver)
 
 This action updates major/minor release tags on a tag push. e.g. Update v1 and v1.2 tag when released v1.2.3.
-ref: https://help.github.com/en/articles/about-actions#versioning-your-action
+ref: <https://help.github.com/en/articles/about-actions#versioning-your-action>
 
 ### Lint - reviewdog integration
 
@@ -131,5 +137,6 @@ Supported linters:
 - [reviewdog/action-misspell](https://github.com/reviewdog/action-misspell)
 
 ### Dependencies Update Automation
+
 This repository uses [haya14busa/action-depup](https://github.com/haya14busa/action-depup) to update
 reviewdog version.

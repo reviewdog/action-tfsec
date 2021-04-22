@@ -1,4 +1,4 @@
-name: Test
+name: Tests
 
 on:
   push:
@@ -6,9 +6,13 @@ on:
       - master
   pull_request:
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   test-check:
-    name: runner / tfsec (github-check)
+    name: tfsec (github-check)
     runs-on: ubuntu-latest
 
     steps:
@@ -30,14 +34,14 @@ jobs:
           tfsec_return="${{ steps.test.outputs.tfsec-return-code }}"
           reviewdog_return="${{ steps.test.outputs.reviewdog-return-code }}"
 
-          if [ "$tfsec_return" -eq 1 ]; then
+          if [[ "$tfsec_return" -eq 1 ]]; then
             echo "tfsec correctly returned failure ${tfsec_return}"
           else
             echo "tfsec returned ${tfsec_return}, expected '1'. Failing..."
             exit 1
           fi
 
-          if [ "$reviewdog_return" -eq 0 ]; then
+          if [[ "$reviewdog_return" -eq 0 ]]; then
             echo "reviewdog correctly returned success: ${reviewdog_return}"
           else
             echo "reviewdog returned ${reviewdog_return}, expected '0'. Failing..."
@@ -46,7 +50,7 @@ jobs:
 
   test-pr-check:
     if: github.event_name == 'pull_request'
-    name: runner / tfsec (github-pr-check)
+    name: tfsec (github-pr-check)
     runs-on: ubuntu-latest
 
     steps:
@@ -68,14 +72,14 @@ jobs:
           tfsec_return="${{ steps.test.outputs.tfsec-return-code }}"
           reviewdog_return="${{ steps.test.outputs.reviewdog-return-code }}"
 
-          if [ "$tfsec_return" -eq 1 ]; then
+          if [[ "$tfsec_return" -eq 1 ]]; then
             echo "tfsec correctly returned failure ${tfsec_return}"
           else
             echo "tfsec returned ${tfsec_return}, expected '1'. Failing..."
             exit 1
           fi
 
-          if [ "$reviewdog_return" -eq 0 ]; then
+          if [[ "$reviewdog_return" -eq 0 ]]; then
             echo "reviewdog correctly returned success: ${reviewdog_return}"
           else
             echo "reviewdog returned ${reviewdog_return}, expected '0'. Failing..."
@@ -84,7 +88,7 @@ jobs:
 
   test-pr-review:
     if: github.event_name == 'pull_request'
-    name: runner / tfsec (github-pr-review)
+    name: tfsec (github-pr-review)
     runs-on: ubuntu-latest
 
     steps:
@@ -108,15 +112,89 @@ jobs:
           tfsec_return="${{ steps.test.outputs.tfsec-return-code }}"
           reviewdog_return="${{ steps.test.outputs.reviewdog-return-code }}"
 
-          if [ "$tfsec_return" -eq 1 ]; then
+          if [[ "$tfsec_return" -eq 1 ]]; then
             echo "tfsec correctly returned failure ${tfsec_return}"
           else
             echo "tfsec returned ${tfsec_return}, expected '1'. Failing..."
             exit 1
           fi
 
-          if [ "$reviewdog_return" -eq 0 ]; then
-            echo "reviewdog correctly returned failure: ${reviewdog_return}"
+          if [[ "$reviewdog_return" -eq 0 ]]; then
+            echo "reviewdog correctly returned success: ${reviewdog_return}"
+          else
+            echo "reviewdog returned ${reviewdog_return}, expected '0'. Failing..."
+            exit 1
+          fi
+
+  test-macos:
+    name: tfsec (macos)
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: ./
+        continue-on-error: true
+        id: test
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-check
+          level: info
+          working_directory: testdata
+
+      # The check is expected to fail on the test data
+      - name: Check return codes
+        if: success() || failure ()
+        run: |
+          tfsec_return="${{ steps.test.outputs.tfsec-return-code }}"
+          reviewdog_return="${{ steps.test.outputs.reviewdog-return-code }}"
+
+          if [[ "$tfsec_return" -eq 1 ]]; then
+            echo "tfsec correctly returned failure ${tfsec_return}"
+          else
+            echo "tfsec returned ${tfsec_return}, expected '1'. Failing..."
+            exit 1
+          fi
+
+          if [[ "$reviewdog_return" -eq 0 ]]; then
+            echo "reviewdog correctly returned success: ${reviewdog_return}"
+          else
+            echo "reviewdog returned ${reviewdog_return}, expected '0'. Failing..."
+            exit 1
+          fi
+
+  test-windows:
+    name: tfsec (windows)
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: ./
+        continue-on-error: true
+        id: test
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-check
+          level: info
+          working_directory: testdata
+
+      # The check is expected to fail on the test data
+      - name: Check return codes
+        if: success() || failure ()
+        run: |
+          tfsec_return="${{ steps.test.outputs.tfsec-return-code }}"
+          reviewdog_return="${{ steps.test.outputs.reviewdog-return-code }}"
+
+          if [[ "$tfsec_return" -eq 1 ]]; then
+            echo "tfsec correctly returned failure ${tfsec_return}"
+          else
+            echo "tfsec returned ${tfsec_return}, expected '1'. Failing..."
+            exit 1
+          fi
+
+          if [[ "$reviewdog_return" -eq 0 ]]; then
+            echo "reviewdog correctly returned success: ${reviewdog_return}"
           else
             echo "reviewdog returned ${reviewdog_return}, expected '0'. Failing..."
             exit 1
