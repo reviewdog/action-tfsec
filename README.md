@@ -15,14 +15,14 @@ to enforce best practices.
 
 ### With `github-pr-check`
 
-By default, with `reporter: github-pr-check` an annotation is added to
+By default, with `reviewdog_reporter: github-pr-check` an annotation is added to
 the line:
 
 ![Example comment made by the action, with github-pr-check](./example-github-pr-check.png)
 
 ### With `github-pr-review`
 
-With `reporter: github-pr-review` a comment is added to
+With `reviewdog_reporter: github-pr-review` a comment is added to
 the Pull Request Conversation:
 
 ![Example comment made by the action, with github-pr-review](./example-github-pr-review.png)
@@ -33,18 +33,23 @@ the Pull Request Conversation:
 
 **Required**. Must be in form of `github_token: ${{ secrets.github_token }}`.
 
-### `level`
+### `working_directory`
+
+Optional. Directory to run the action on, from the repo root.
+The default is `.` ( root of the repository).
+
+### `reviewdog_log_level`
 
 Optional. Report level for reviewdog [`info`,`warning`,`error`].
 It's same as `-level` flag of reviewdog.
 The default is `error`.
 
-### `reporter`
+### `reviewdog_reporter`
 
 Optional. Reporter of reviewdog command [`github-pr-check`,`github-pr-review`].
 The default is `github-pr-check`.
 
-### `filter_mode`
+### `reviewdog_filter_mode`
 
 Optional. Filtering for the reviewdog command [`added`,`diff_context`,`file`,`nofilter`].
 
@@ -52,7 +57,7 @@ The default is `added`.
 
 See [reviewdog doccumentation for filter mode](https://github.com/reviewdog/reviewdog/tree/master#filter-mode) for details.
 
-### `fail_on_error`
+### `reviewdog_fail_on_error`
 
 Optional. Exit code for reviewdog when errors are found [`true`,`false`].
 
@@ -65,12 +70,7 @@ See [reviewdog doccumentation for exit codes](https://github.com/reviewdog/revie
 Optional. Additional reviewdog flags. Useful for debugging errors, when it can be set to `-tee`.
 The default is ``.
 
-### `working_directory`
-
-Optional. Directory to run the action on, from the repo root.
-The default is `.` ( root of the repository).
-
-### `flags`
+### `tfsec_flags`
 
 Optional. List of arguments to send to tfsec.
 For the output to be parsable by reviewdog [`--format=checkstyle` is enforced](./entrypoint.sh).
@@ -94,21 +94,23 @@ on: [pull_request]
 jobs:
   tfsec:
     name: runner / tfsec
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # Windows and macOS are also supported
 
     steps:
       - name: Clone repo
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
 
-      - name: tfsec
+      - name: Run tfsec with reviewdog output on the PR
         uses: reviewdog/action-tfsec@master
         with:
           github_token: ${{ secrets.github_token }}
-          working_directory: "testdata" # Change working directory
-          reporter: github-pr-review # Change reporter
-          fail_on_error: "true" # Fail action if errors are found
-          filter_mode: "nofilter" # Check all files, not just the diff
-          flags: "" # Optional
+          working_directory: my_directory # Change working directory
+          reviewdog_log_level: info # Get more output from reviewdog
+          reviewdog_reporter: github-pr-review # Change reviewdog reporter
+          reviewdog_filter_mode: nofilter # Check all files, not just the diff
+          reviewdog_fail_on_error: true # Fail action if errors are found
+          reviewdog_flags: -tee # Add debug flag to reviewdog
+          tfsec_flags: "" # Optional
 ```
 
 ## Development
