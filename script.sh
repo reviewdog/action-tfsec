@@ -68,11 +68,11 @@ echo '::group:: Running tfsec with reviewdog 🐶 ...'
   tfsec --format=checkstyle ${INPUT_TFSEC_FLAGS:-} . \
     | reviewdog -f=checkstyle \
         -name="tfsec" \
-        -reporter="${INPUT_REVIEWDOG_REPORTER}" \
-        -level="${INPUT_REVIEWDOG_LOG_LEVEL}" \
-        -fail-on-error="${INPUT_REVIEWDOG_FAIL_ON_ERROR}" \
-        -filter-mode="${INPUT_REVIEWDOG_FILTER_MODE}" \
-        ${INPUT_REVIEWDOG_FLAGS}
+        -reporter="${INPUT_REPORTER}" \
+        -level="${INPUT_LOG_LEVEL}" \
+        -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
+        -filter-mode="${INPUT_FILTER_MODE}" \
+        ${INPUT_FLAGS}
 
   tfsec_return="${PIPESTATUS[0]}" reviewdog_return="${PIPESTATUS[1]}" exit_code=$?
   echo "::set-output name=tfsec-return-code::${tfsec_return}"

@@ -12,29 +12,29 @@ inputs:
       Default is . ( root of the repository)
     default: '.'
     required: false
-  reviewdog_log_level:
+  log_level:
     description: 'Report level for reviewdog [info,warning,error]'
     default: 'error'
     required: false
-  reviewdog_reporter:
+  reporter:
     description: |
       Reporter of reviewdog command [github-pr-check,github-pr-review].
       Default is github-pr-check.
     default: 'github-pr-check'
     required: false
-  reviewdog_filter_mode:
+  filter_mode:
     description: |
       Filtering for the reviewdog command [added,diff_context,file,nofilter].
       Default is added.
     default: 'added'
     required: false
-  reviewdog_fail_on_error:
+  fail_on_error:
     description: |
       Exit code for reviewdog when errors are found [true,false]
       Default is `false`.
     default: 'false'
     required: false
-  reviewdog_flags:
+  flags:
     description: 'Additional reviewdog flags'
     default: ''
     required: false
@@ -68,11 +68,11 @@ runs:
         # https://github.community/t/input-variable-name-is-not-available-in-composite-run-steps/127611
         INPUT_GITHUB_TOKEN: ${{ inputs.github_token }}
         INPUT_WORKING_DIRECTORY: ${{ inputs.working_directory }}
-        INPUT_REVIEWDOG_LOG_LEVEL: ${{ inputs.reviewdog_log_level }}
-        INPUT_REVIEWDOG_REPORTER: ${{ inputs.reviewdog_reporter }}
-        INPUT_REVIEWDOG_FILTER_MODE: ${{ inputs.reviewdog_filter_mode }}
-        INPUT_REVIEWDOG_FAIL_ON_ERROR: ${{ inputs.reviewdog_fail_on_error }}
-        INPUT_REVIEWDOG_FLAGS: ${{ inputs.reviewdog_flags }}
+        INPUT_LOG_LEVEL: ${{ inputs.log_level }}
+        INPUT_REPORTER: ${{ inputs.reporter }}
+        INPUT_FILTER_MODE: ${{ inputs.filter_mode }}
+        INPUT_FAIL_ON_ERROR: ${{ inputs.fail_on_error }}
+        INPUT_FLAGS: ${{ inputs.flags }}
         INPUT_TFSEC_FLAGS: ${{ inputs.tfsec_flags }}
 
 branding:
