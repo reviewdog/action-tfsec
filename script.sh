@@ -30,9 +30,6 @@ echo '::endgroup::'
 
 echo "::group::🐶 Installing reviewdog (${REVIEWDOG_VERSION}) ... https://github.com/reviewdog/reviewdog"
   curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b "${REVIEWDOG_PATH}" "${REVIEWDOG_VERSION}" 2>&1
-
-  echo "${REVIEWDOG_PATH}" >> "${GITHUB_PATH}"
-  export PATH="${REVIEWDOG_PATH}:${PATH}"
 echo '::endgroup::'
 
 echo '::group:: Installing tfsec (latest) ... https://github.com/tfsec/tfsec'
@@ -49,13 +46,10 @@ echo '::group:: Installing tfsec (latest) ... https://github.com/tfsec/tfsec'
     --location "${url}" \
     --output "${binary}"
   install tfsec "${TFSEC_PATH}"
-
-  echo "${TFSEC_PATH}" >> "${GITHUB_PATH}"
-  export PATH="${TFSEC_PATH}:${PATH}"
 echo '::endgroup::'
 
 echo "::group:: Print tfsec details ..."
-  tfsec --version
+  "${TFSEC_PATH}/tfsec" --version
 echo '::endgroup::'
 
 echo '::group:: Running tfsec with reviewdog 🐶 ...'
@@ -65,8 +59,8 @@ echo '::group:: Running tfsec with reviewdog 🐶 ...'
   set +Eeuo pipefail
 
   # shellcheck disable=SC2086
-  tfsec --format=checkstyle ${INPUT_TFSEC_FLAGS:-} . \
-    | reviewdog -f=checkstyle \
+  "${TFSEC_PATH}/tfsec" --format=checkstyle ${INPUT_TFSEC_FLAGS:-} . \
+    | "${REVIEWDOG_PATH}/reviewdog" -f=checkstyle \
         -name="tfsec" \
         -reporter="${INPUT_REPORTER}" \
         -level="${INPUT_LOG_LEVEL}" \
