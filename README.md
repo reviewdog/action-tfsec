@@ -38,7 +38,7 @@ the Pull Request Conversation:
 Optional. Directory to run the action on, from the repo root.
 The default is `.` ( root of the repository).
 
-### `log_level`
+### `level`
 
 Optional. Report level for reviewdog [`info`,`warning`,`error`].
 It's same as `-level` flag of reviewdog.
@@ -105,7 +105,7 @@ jobs:
         with:
           github_token: ${{ secrets.github_token }}
           working_directory: my_directory # Change working directory
-          log_level: info # Get more output from reviewdog
+          level: info # Get more output from reviewdog
           reporter: github-pr-review # Change reviewdog reporter
           filter_mode: nofilter # Check all files, not just the diff
           fail_on_error: true # Fail action if errors are found

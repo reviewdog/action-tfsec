@@ -63,7 +63,7 @@ echo '::group:: Running tfsec with reviewdog 🐶 ...'
     | "${REVIEWDOG_PATH}/reviewdog" -f=checkstyle \
         -name="tfsec" \
         -reporter="${INPUT_REPORTER}" \
-        -level="${INPUT_LOG_LEVEL}" \
+        -level="${INPUT_LEVEL}" \
         -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
         -filter-mode="${INPUT_FILTER_MODE}" \
         ${INPUT_FLAGS}
