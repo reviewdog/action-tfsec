@@ -1,6 +1,6 @@
 # GitHub Action: Run tfsec with reviewdog
 
-[![Test](https://github.com/reviewdog/action-tfsec/workflows/Test/badge.svg)](https://github.com/reviewdog/action-tfsec/actions?query=workflow%3ATest)
+[![Tests](https://github.com/reviewdog/action-tfsec/workflows/Tests/badge.svg)](https://github.com/reviewdog/action-tfsec/actions?query=workflow%3ATests)
 [![Lint](https://github.com/reviewdog/action-tfsec/workflows/Lint/badge.svg)](https://github.com/reviewdog/action-tfsec/actions?query=workflow%Lint)
 [![depup](https://github.com/reviewdog/action-tfsec/workflows/depup/badge.svg)](https://github.com/reviewdog/action-tfsec/actions?query=workflow%3Adepup)
 [![release](https://github.com/reviewdog/action-tfsec/workflows/release/badge.svg)](https://github.com/reviewdog/action-tfsec/actions?query=workflow%3Arelease)
