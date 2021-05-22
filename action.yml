@@ -38,6 +38,12 @@ inputs:
     description: 'Additional reviewdog flags'
     default: ''
     required: false
+  tfsec_version:
+    description: |
+      The version of tfsec to install.
+      Default is latest.
+    default: 'latest'
+    required: false
   tfsec_flags:
     description: |
       List of arguments to send to tfsec
@@ -73,6 +79,7 @@ runs:
         INPUT_FILTER_MODE: ${{ inputs.filter_mode }}
         INPUT_FAIL_ON_ERROR: ${{ inputs.fail_on_error }}
         INPUT_FLAGS: ${{ inputs.flags }}
+        INPUT_TFSEC_VERSION: ${{ inputs.tfsec_version }}
         INPUT_TFSEC_FLAGS: ${{ inputs.tfsec_flags }}
 
 branding:
