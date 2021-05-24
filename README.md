@@ -70,6 +70,11 @@ See [reviewdog documentation for exit codes](https://github.com/reviewdog/review
 Optional. Additional reviewdog flags. Useful for debugging errors, when it can be set to `-tee`.
 The default is ``.
 
+### `tfsec_version`
+
+Optional. The version of tfsec to install.
+The default is `latest`.
+
 ### `tfsec_flags`
 
 Optional. List of arguments to send to tfsec.
