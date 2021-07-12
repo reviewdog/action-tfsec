@@ -32,16 +32,16 @@ echo "::group::🐶 Installing reviewdog (${REVIEWDOG_VERSION}) ... https://gith
   curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b "${REVIEWDOG_PATH}" "${REVIEWDOG_VERSION}" 2>&1
 echo '::endgroup::'
 
-echo "::group:: Installing tfsec (${INPUT_TFSEC_VERSION}) ... https://github.com/tfsec/tfsec"
+echo "::group:: Installing tfsec (${INPUT_TFSEC_VERSION}) ... https://github.com/aquasecurity/tfsec"
   test ! -d "${TFSEC_PATH}" && install -d "${TFSEC_PATH}"
 
   if [[ "${INPUT_TFSEC_VERSION}" = "latest" ]]; then
-    tfsec_version=$(curl --silent https://api.github.com/repos/tfsec/tfsec/releases/latest | jq -r .tag_name)
+    tfsec_version=$(curl --silent https://api.github.com/repos/aquasecurity/tfsec/releases/latest | jq -r .tag_name)
   else
     tfsec_version=${INPUT_TFSEC_VERSION}
   fi
   binary="tfsec"
-  url="https://github.com/tfsec/tfsec/releases/download/${tfsec_version}/tfsec-${os}-${arch}"
+  url="https://github.com/aquasecurity/tfsec/releases/download/${tfsec_version}/tfsec-${os}-${arch}"
   if [[ "${os}" = "windows" ]]; then
     url+=".exe"
     binary+=".exe"
