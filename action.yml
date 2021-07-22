@@ -6,6 +6,7 @@ inputs:
   github_token:
     description: 'GITHUB_TOKEN'
     required: true
+    default: "${{ github.token }}"
   working_directory:
     description: |
       Directory to run the action on, from the repo root.
