@@ -39,6 +39,7 @@ echo "::group:: Installing tfsec (${INPUT_TFSEC_VERSION}) ... https://github.com
   test ! -d "${TFSEC_PATH}" && install -d "${TFSEC_PATH}"
 
   if [[ "${INPUT_TFSEC_VERSION}" = "latest" ]]; then
+    curl --silent https://api.github.com/repos/aquasecurity/tfsec/releases/latest
     tfsec_version=$(curl --silent https://api.github.com/repos/aquasecurity/tfsec/releases/latest | jq -r .tag_name)
   else
     tfsec_version=${INPUT_TFSEC_VERSION}
