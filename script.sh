@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Print commands for debugging
+set -x
+
 # Fail fast on errors, unset variables, and failures in piped commands
 set -Eeuo pipefail
 
