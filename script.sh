@@ -29,8 +29,14 @@ echo '::group::Preparing ...'
 
   TEMP_PATH="$(mktemp -d)"
   echo "Detected ${os} running on ${arch}, will install tools in ${TEMP_PATH}"
+  JQ_PATH="${TEMP_PATH}/jq"
   REVIEWDOG_PATH="${TEMP_PATH}/reviewdog"
   TFSEC_PATH="${TEMP_PATH}/tfsec"
+echo '::endgroup::'
+
+echo "::group:: Installing jq ... https://stedolan.github.io/jq"
+  curl -sLo $JQ_PATH https://stedolan.github.io/jq/download/linux64/jq
+  chmod +x $JQ_PATH
 echo '::endgroup::'
 
 echo "::group::🐶 Installing reviewdog (${REVIEWDOG_VERSION}) ... https://github.com/reviewdog/reviewdog"
@@ -69,8 +75,9 @@ echo '::group:: Running tfsec with reviewdog 🐶 ...'
   set +Eeuo pipefail
 
   # shellcheck disable=SC2086
-  "${TFSEC_PATH}/tfsec" --format=checkstyle ${INPUT_TFSEC_FLAGS:-} . \
-    | "${REVIEWDOG_PATH}/reviewdog" -f=checkstyle \
+  "${TFSEC_PATH}/tfsec" --format=json ${INPUT_TFSEC_FLAGS:-} . \
+    | "${JQ_PATH}" -r -f "${GITHUB_ACTION_PATH}/to-rdjson.jq" \
+    |  "${REVIEWDOG_PATH}/reviewdog" -f=rdjson \
         -name="tfsec" \
         -reporter="${INPUT_REPORTER}" \
         -level="${INPUT_LEVEL}" \
@@ -78,7 +85,7 @@ echo '::group:: Running tfsec with reviewdog 🐶 ...'
         -filter-mode="${INPUT_FILTER_MODE}" \
         ${INPUT_FLAGS}
 
-  tfsec_return="${PIPESTATUS[0]}" reviewdog_return="${PIPESTATUS[1]}" exit_code=$?
+  tfsec_return="${PIPESTATUS[0]}" reviewdog_return="${PIPESTATUS[2]}" exit_code=$?
   echo "::set-output name=tfsec-return-code::${tfsec_return}"
   echo "::set-output name=reviewdog-return-code::${reviewdog_return}"
 echo '::endgroup::'
