@@ -33,7 +33,6 @@ echo '::group::Preparing ...'
   TFSEC_PATH="${TEMP_PATH}/tfsec"
 echo '::endgroup::'
 
-
 echo "::group::🐶 Installing reviewdog (${REVIEWDOG_VERSION}) ... https://github.com/reviewdog/reviewdog"
   curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b "${REVIEWDOG_PATH}" "${REVIEWDOG_VERSION}" 2>&1
 echo '::endgroup::'
