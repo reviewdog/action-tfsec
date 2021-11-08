@@ -71,7 +71,7 @@ echo '::group:: Running tfsec with reviewdog 🐶 ...'
 
   # shellcheck disable=SC2086
   "${TFSEC_PATH}/tfsec" --format=json ${INPUT_TFSEC_FLAGS:-} . \
-    | "${JQ_PATH}" -r -f "${GITHUB_ACTION_PATH}/to-rdjson.jq" \
+    | jq -r -f "${GITHUB_ACTION_PATH}/to-rdjson.jq" \
     |  "${REVIEWDOG_PATH}/reviewdog" -f=rdjson \
         -name="tfsec" \
         -reporter="${INPUT_REPORTER}" \
