@@ -29,7 +29,6 @@ echo '::group::Preparing ...'
 
   TEMP_PATH="$(mktemp -d)"
   echo "Detected ${os} running on ${arch}, will install tools in ${TEMP_PATH}"
-  JQ_PATH="${TEMP_PATH}/jq"
   REVIEWDOG_PATH="${TEMP_PATH}/reviewdog"
   TFSEC_PATH="${TEMP_PATH}/tfsec"
 echo '::endgroup::'
