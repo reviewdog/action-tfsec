@@ -69,8 +69,9 @@ echo '::group:: Running tfsec with reviewdog 🐶 ...'
   set +Eeuo pipefail
 
   # shellcheck disable=SC2086
-  "${TFSEC_PATH}/tfsec" --format=checkstyle ${INPUT_TFSEC_FLAGS:-} . \
-    | "${REVIEWDOG_PATH}/reviewdog" -f=checkstyle \
+  "${TFSEC_PATH}/tfsec" --format=json ${INPUT_TFSEC_FLAGS:-} . \
+    | jq -r -f "${GITHUB_ACTION_PATH}/to-rdjson.jq" \
+    |  "${REVIEWDOG_PATH}/reviewdog" -f=rdjson \
         -name="tfsec" \
         -reporter="${INPUT_REPORTER}" \
         -level="${INPUT_LEVEL}" \
@@ -78,7 +79,7 @@ echo '::group:: Running tfsec with reviewdog 🐶 ...'
         -filter-mode="${INPUT_FILTER_MODE}" \
         ${INPUT_FLAGS}
 
-  tfsec_return="${PIPESTATUS[0]}" reviewdog_return="${PIPESTATUS[1]}" exit_code=$?
+  tfsec_return="${PIPESTATUS[0]}" reviewdog_return="${PIPESTATUS[2]}" exit_code=$?
   echo "::set-output name=tfsec-return-code::${tfsec_return}"
   echo "::set-output name=reviewdog-return-code::${reviewdog_return}"
 echo '::endgroup::'
