@@ -5,7 +5,7 @@
     name: "tfsec",
     url: "https://github.com/aquasecurity/tfsec"
   },
-  diagnostics: .results | map({
+  diagnostics: (.results // {}) | map({
     message: .description,
     code: {
       value: .rule_id,
