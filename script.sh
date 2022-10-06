@@ -69,7 +69,9 @@ echo '::group:: Running tfsec with reviewdog 🐶 ...'
   set +Eeuo pipefail
 
   # shellcheck disable=SC2086
+  temp_tfsec_results_file="tfsec-results.json"
   "${TFSEC_PATH}/tfsec" --format=json ${INPUT_TFSEC_FLAGS:-} . \
+    | tee "${temp_tfsec_results_file}"
     | jq -r -f "${GITHUB_ACTION_PATH}/to-rdjson.jq" \
     |  "${REVIEWDOG_PATH}/reviewdog" -f=rdjson \
         -name="tfsec" \
@@ -79,9 +81,14 @@ echo '::group:: Running tfsec with reviewdog 🐶 ...'
         -filter-mode="${INPUT_FILTER_MODE}" \
         ${INPUT_FLAGS}
 
-  tfsec_return="${PIPESTATUS[0]}" reviewdog_return="${PIPESTATUS[2]}" exit_code=$?
+  tfsec_return="${PIPESTATUS[0]}" reviewdog_return="${PIPESTATUS[3]}" exit_code=$?
   echo "::set-output name=tfsec-return-code::${tfsec_return}"
   echo "::set-output name=reviewdog-return-code::${reviewdog_return}"
+
+  # As GitHub Actions can't deal with an output with multiple lines,
+  # the tfsec results JSON has to get a single line with `jq -c`.
+  tfsec_results_json="$(cat "${temp_tfsec_results_file}" | jq -r -c '.')"
+  echo "::set-output name=tfsec-results-json::${tfsec_results_json}"
 echo '::endgroup::'
 
 exit "${exit_code}"
