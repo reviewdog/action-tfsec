@@ -91,6 +91,10 @@ The `tfsec` command return code.
 
 The `reviewdog` command return code.
 
+## `tfsec-results-json`
+
+The single lined JSON object of tfsec results.
+
 ## Example usage
 
 ```yml
