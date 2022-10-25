@@ -70,12 +70,12 @@ See [reviewdog documentation for exit codes](https://github.com/reviewdog/review
 Optional. Additional reviewdog flags. Useful for debugging errors, when it can be set to `-tee`.
 The default is ``.
 
-### `KICS_version`
+### `kics_version`
 
 Optional. The version of kics to install.
 The default is `latest`.
 
-### `KICS_flags`
+### `kics_flags`
 
 Optional. List of arguments to send to kics.
 For the output to be parsable by reviewdog [`--format=checkstyle` is enforced](./entrypoint.sh).
@@ -115,7 +115,7 @@ jobs:
           filter_mode: nofilter # Check all files, not just the diff
           fail_on_error: true # Fail action if errors are found
           flags: -tee # Add debug flag to reviewdog
-          KICS_flags: "" # Optional
+          kics_flags: "" # Optional
 ```
 
 ## Development
