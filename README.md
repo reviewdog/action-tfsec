@@ -7,7 +7,7 @@
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/reviewdog/action-KICS?logo=github&sort=semver)](https://github.com/reviewdog/action-KICS/releases)
 [![action-bumpr supported](https://img.shields.io/badge/bumpr-supported-ff69b4?logo=github&link=https://github.com/haya14busa/action-bumpr)](https://github.com/haya14busa/action-bumpr)
 
-This action runs [KICS](https://github.com/liamg/KICS) with
+This action runs [KICS](https://github.com/Checkmarx/kics) with
 [reviewdog](https://github.com/reviewdog/reviewdog) on pull requests
 to enforce best practices.
 
