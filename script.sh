@@ -66,7 +66,6 @@ echo '::group:: Running kics with reviewdog 🐶 ...'
   set +Eeuo pipefail
 
   # shellcheck disable=SC2086
-  ls
   export KICS_QUERIES_PATH=./assets
   "${KICS_PATH}/kics" scan --path ${INPUT_KICS_SCAN_PATH} --output-name kics --output-path . --report-formats json ${INPUT_KICS_FLAGS:-} 
   jq -r -f "${GITHUB_ACTION_PATH}/to-rdjson.jq" kics.json \
