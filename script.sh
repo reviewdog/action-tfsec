@@ -26,11 +26,11 @@ echo '::endgroup::'
   tar -xvf kics*.tar.gz
   ver=$(lastversion Checkmarx/kics)
   mv kics-${ver} kics
-  ls
 echo '::endgroup::'
 
 echo "::group:: Print kics details ..."
-  "./kics" --version
+  ls
+  "kics" --version
 echo '::endgroup::'
 
 echo '::group:: Running kics with reviewdog 🐶 ...'
