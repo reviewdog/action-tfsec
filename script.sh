@@ -45,12 +45,11 @@ echo "::group:: Installing kics (${INPUT_KICS_VERSION}) ... https://github.com/C
   else
     kics_version=${INPUT_KICS_VERSION}
   fi
-  binary="kics"
   url="https://github.com/Checkmarx/kics/releases/download/v${kics_version}/kics_${kics_version}_${os}_${arch}.tar.gz"
 
   curl --silent --show-error --fail \
     --location "${url}" \
-    --output "${binary}"
+    --output "kics_${kics_version}_${os}_${arch}.tar.gz"
   tar -xvzf kics_${kics_version}_${os}_${arch}.tar.gz
   install kics "${KICS_PATH}"
 echo '::endgroup::'
