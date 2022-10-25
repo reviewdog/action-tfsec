@@ -1,71 +1,71 @@
-name: 'Run tfsec with reviewdog'
-description: '🐶 Run tfsec with reviewdog on pull requests to enforce security best practices'
-author: 'vlaaaaaaad (reviewdog)'
+name: "Run KICS with reviewdog"
+description: "🐶 Run KICS with reviewdog on pull requests to enforce security best practices"
+author: "vlaaaaaaad (reviewdog)"
 
 inputs:
   github_token:
-    description: 'GITHUB_TOKEN'
+    description: "GITHUB_TOKEN"
     required: true
     default: "${{ github.token }}"
   working_directory:
     description: |
       Directory to run the action on, from the repo root.
       Default is . ( root of the repository)
-    default: '.'
+    default: "."
     required: false
   level:
-    description: 'Report level for reviewdog [info,warning,error]'
-    default: 'error'
+    description: "Report level for reviewdog [info,warning,error]"
+    default: "error"
     required: false
   reporter:
     description: |
       Reporter of reviewdog command [github-pr-check,github-pr-review].
       Default is github-pr-check.
-    default: 'github-pr-check'
+    default: "github-pr-check"
     required: false
   filter_mode:
     description: |
       Filtering for the reviewdog command [added,diff_context,file,nofilter].
       Default is added.
-    default: 'added'
+    default: "added"
     required: false
   fail_on_error:
     description: |
       Exit code for reviewdog when errors are found [true,false]
       Default is `false`.
-    default: 'false'
+    default: "false"
     required: false
   flags:
-    description: 'Additional reviewdog flags'
-    default: ''
+    description: "Additional reviewdog flags"
+    default: ""
     required: false
-  tfsec_version:
+  kics_version:
     description: |
-      The version of tfsec to install.
+      The version of KICS to install.
       Default is latest.
-    default: 'latest'
+    default: "latest"
     required: false
-  tfsec_flags:
+  kics_flags:
     description: |
-      List of arguments to send to tfsec
+      List of arguments to send to kics
       For the output to be parsable by reviewdog --format=checkstyle is enforced
       Default is blank.
-    default: ''
+    default: ""
     required: false
 
 outputs:
-  tfsec-return-code:
-    description: 'tfsec command return code'
-    value: ${{ steps.tfsec.outputs.tfsec-return-code }}
+  kics-return-code:
+    description: "kics command return code"
+    value: ${{ steps.kics.outputs.kics-return-code }}
   reviewdog-return-code:
-    description: 'reviewdog command return code'
-    value: ${{ steps.tfsec.outputs.reviewdog-return-code }}
+    description: "reviewdog command return code"
+    value: ${{ steps.kicsoutputs.reviewdog-return-code }}
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - run: $GITHUB_ACTION_PATH/script.sh
-      id: tfsec
+      id: kics
       shell: bash
       env:
         # We may want to allow specifying reviewdog version as
@@ -80,9 +80,9 @@ runs:
         INPUT_FILTER_MODE: ${{ inputs.filter_mode }}
         INPUT_FAIL_ON_ERROR: ${{ inputs.fail_on_error }}
         INPUT_FLAGS: ${{ inputs.flags }}
-        INPUT_TFSEC_VERSION: ${{ inputs.tfsec_version }}
-        INPUT_TFSEC_FLAGS: ${{ inputs.tfsec_flags }}
+        INPUT_KICS_VERSION: ${{ inputs.kics_version }}
+        INPUT_KICS_FLAGS: ${{ inputs.kics_flags }}
 
 branding:
-  icon: 'edit'
-  color: 'gray-dark'
+  icon: "edit"
+  color: "gray-dark"

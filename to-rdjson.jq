@@ -1,32 +1,37 @@
-# Convert TFsec JSON output to Reviewdog Diagnostic Format (rdjson)
+# Convert KICS JSON output to Reviewdog Diagnostic Format (rdjson)
 # https://github.com/reviewdog/reviewdog/blob/f577bd4b56e5973796eb375b4205e89bce214bd9/proto/rdf/reviewdog.proto
 {
   source: {
-    name: "tfsec",
-    url: "https://github.com/aquasecurity/tfsec"
+    name: "kics",
+    url: "https://github.com/Checkmarx/kics"
   },
-  diagnostics: (.results // {}) | map({
-    message: .description,
-    code: {
-      value: .rule_id,
-      url: .links[0],
-    } ,
-    location: {
-      path: .location.filename,
+  diagnostics: (.queries // {}) 
+| map(.query_url as $rule_url
+| .files[] = {
+  message: .description,
+  code: {
+      value: .files[].similarity_id,
+      url: .query_url,
+  },
+  location: {
+      path: .files[].file_name,
       range: {
         start: {
-          line: .location.start_line,
+          line: .files[].line,
         },
       }
     },
-    severity: (if .severity | startswith("HIGH") then
+  severity: (if .severity | startswith("HIGH") then
               "ERROR"
             elif .severity | startswith("MEDIUM") then
               "WARNING"
             elif .severity | startswith("LOW") then
               "INFO"
+            elif .severity | startswith("INFO") then
+              "INFO"  
             else
-              null
+              "null"
             end), 
-  })
+})  
+| map(.files) | flatten | unique_by(.code.value)
 }

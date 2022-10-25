@@ -1,13 +1,13 @@
-# GitHub Action: Run tfsec with reviewdog
+# GitHub Action: Run KICS with reviewdog
 
-[![Tests](https://github.com/reviewdog/action-tfsec/workflows/Tests/badge.svg)](https://github.com/reviewdog/action-tfsec/actions?query=workflow%3ATests)
-[![Lint](https://github.com/reviewdog/action-tfsec/workflows/Lint/badge.svg)](https://github.com/reviewdog/action-tfsec/actions?query=workflow%Lint)
-[![depup](https://github.com/reviewdog/action-tfsec/workflows/depup/badge.svg)](https://github.com/reviewdog/action-tfsec/actions?query=workflow%3Adepup)
-[![release](https://github.com/reviewdog/action-tfsec/workflows/release/badge.svg)](https://github.com/reviewdog/action-tfsec/actions?query=workflow%3Arelease)
-[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/reviewdog/action-tfsec?logo=github&sort=semver)](https://github.com/reviewdog/action-tfsec/releases)
+[![Tests](https://github.com/reviewdog/action-KICS/workflows/Tests/badge.svg)](https://github.com/reviewdog/action-KICS/actions?query=workflow%3ATests)
+[![Lint](https://github.com/reviewdog/action-KICS/workflows/Lint/badge.svg)](https://github.com/reviewdog/action-KICS/actions?query=workflow%Lint)
+[![depup](https://github.com/reviewdog/action-KICS/workflows/depup/badge.svg)](https://github.com/reviewdog/action-KICS/actions?query=workflow%3Adepup)
+[![release](https://github.com/reviewdog/action-KICS/workflows/release/badge.svg)](https://github.com/reviewdog/action-KICS/actions?query=workflow%3Arelease)
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/reviewdog/action-KICS?logo=github&sort=semver)](https://github.com/reviewdog/action-KICS/releases)
 [![action-bumpr supported](https://img.shields.io/badge/bumpr-supported-ff69b4?logo=github&link=https://github.com/haya14busa/action-bumpr)](https://github.com/haya14busa/action-bumpr)
 
-This action runs [tfsec](https://github.com/liamg/tfsec) with
+This action runs [KICS](https://github.com/liamg/KICS) with
 [reviewdog](https://github.com/reviewdog/reviewdog) on pull requests
 to enforce best practices.
 
@@ -70,22 +70,22 @@ See [reviewdog documentation for exit codes](https://github.com/reviewdog/review
 Optional. Additional reviewdog flags. Useful for debugging errors, when it can be set to `-tee`.
 The default is ``.
 
-### `tfsec_version`
+### `KICS_version`
 
-Optional. The version of tfsec to install.
+Optional. The version of KICS to install.
 The default is `latest`.
 
-### `tfsec_flags`
+### `KICS_flags`
 
-Optional. List of arguments to send to tfsec.
+Optional. List of arguments to send to KICS.
 For the output to be parsable by reviewdog [`--format=checkstyle` is enforced](./entrypoint.sh).
 The default is ``.
 
 ## Outputs
 
-## `tfsec-return-code`
+## `KICS-return-code`
 
-The `tfsec` command return code.
+The `KICS` command return code.
 
 ## `reviewdog-return-code`
 
@@ -94,19 +94,19 @@ The `reviewdog` command return code.
 ## Example usage
 
 ```yml
-name: tfsec
+name: KICS
 on: [pull_request]
 jobs:
-  tfsec:
-    name: runner / tfsec
+  KICS:
+    name: runner / KICS
     runs-on: ubuntu-latest # Windows and macOS are also supported
 
     steps:
       - name: Clone repo
         uses: actions/checkout@v2
 
-      - name: Run tfsec with reviewdog output on the PR
-        uses: reviewdog/action-tfsec@master
+      - name: Run KICS with reviewdog output on the PR
+        uses: reviewdog/action-KICS@master
         with:
           github_token: ${{ secrets.github_token }}
           working_directory: my_directory # Change working directory
@@ -115,7 +115,7 @@ jobs:
           filter_mode: nofilter # Check all files, not just the diff
           fail_on_error: true # Fail action if errors are found
           flags: -tee # Add debug flag to reviewdog
-          tfsec_flags: "" # Optional
+          KICS_flags: "" # Optional
 ```
 
 ## Development

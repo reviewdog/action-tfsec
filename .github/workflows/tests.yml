@@ -12,7 +12,7 @@ defaults:
 
 jobs:
   test-check:
-    name: tfsec (github-check)
+    name: kics (github-check)
     runs-on: ubuntu-latest
 
     steps:
@@ -31,13 +31,13 @@ jobs:
       - name: Check return codes
         if: success() || failure ()
         run: |
-          tfsec_return="${{ steps.test.outputs.tfsec-return-code }}"
+          kics_return="${{ steps.test.outputs.kics-return-code }}"
           reviewdog_return="${{ steps.test.outputs.reviewdog-return-code }}"
 
-          if [[ "$tfsec_return" -eq 1 ]]; then
-            echo "tfsec correctly returned failure ${tfsec_return}"
+          if [[ "$kics_return" -eq 1 ]]; then
+            echo "kics correctly returned failure ${kics_return}"
           else
-            echo "tfsec returned ${tfsec_return}, expected '1'. Failing..."
+            echo "kics returned ${kics_return}, expected '1'. Failing..."
             exit 1
           fi
 
@@ -50,7 +50,7 @@ jobs:
 
   test-pr-check:
     if: github.event_name == 'pull_request'
-    name: tfsec (github-pr-check)
+    name: kics (github-pr-check)
     runs-on: ubuntu-latest
 
     steps:
@@ -69,13 +69,13 @@ jobs:
       - name: Check return codes
         if: success() || failure ()
         run: |
-          tfsec_return="${{ steps.test.outputs.tfsec-return-code }}"
+          kics_return="${{ steps.test.outputs.kics-return-code }}"
           reviewdog_return="${{ steps.test.outputs.reviewdog-return-code }}"
 
-          if [[ "$tfsec_return" -eq 1 ]]; then
-            echo "tfsec correctly returned failure ${tfsec_return}"
+          if [[ "$kics_return" -eq 1 ]]; then
+            echo "kics correctly returned failure ${kics_return}"
           else
-            echo "tfsec returned ${tfsec_return}, expected '1'. Failing..."
+            echo "kics returned ${kics_return}, expected '1'. Failing..."
             exit 1
           fi
 
@@ -88,7 +88,7 @@ jobs:
 
   test-pr-review:
     if: github.event_name == 'pull_request'
-    name: tfsec (github-pr-review)
+    name: kics (github-pr-review)
     runs-on: ubuntu-latest
 
     steps:
@@ -109,13 +109,13 @@ jobs:
       - name: Check return codes
         if: success() || failure ()
         run: |
-          tfsec_return="${{ steps.test.outputs.tfsec-return-code }}"
+          kics_return="${{ steps.test.outputs.kics-return-code }}"
           reviewdog_return="${{ steps.test.outputs.reviewdog-return-code }}"
 
-          if [[ "$tfsec_return" -eq 1 ]]; then
-            echo "tfsec correctly returned failure ${tfsec_return}"
+          if [[ "$kics_return" -eq 1 ]]; then
+            echo "kics correctly returned failure ${kics_return}"
           else
-            echo "tfsec returned ${tfsec_return}, expected '1'. Failing..."
+            echo "kics returned ${kics_return}, expected '1'. Failing..."
             exit 1
           fi
 
@@ -128,9 +128,9 @@ jobs:
 
   test-operating-systems:
     strategy:
-       matrix:
-         platform: [ubuntu-latest, macos-latest, windows-latest]
-    name: tfsec (${{ matrix.platform }})
+      matrix:
+        platform: [ubuntu-latest, macos-latest, windows-latest]
+    name: kics (${{ matrix.platform }})
     runs-on: ${{ matrix.platform }}
 
     steps:
@@ -149,13 +149,13 @@ jobs:
       - name: Check return codes
         if: success() || failure ()
         run: |
-          tfsec_return="${{ steps.test.outputs.tfsec-return-code }}"
+          kics_return="${{ steps.test.outputs.kics-return-code }}"
           reviewdog_return="${{ steps.test.outputs.reviewdog-return-code }}"
 
-          if [[ "$tfsec_return" -eq 1 ]]; then
-            echo "tfsec correctly returned failure ${tfsec_return}"
+          if [[ "$kics_return" -eq 1 ]]; then
+            echo "kics correctly returned failure ${kics_return}"
           else
-            echo "tfsec returned ${tfsec_return}, expected '1'. Failing..."
+            echo "kics returned ${kics_return}, expected '1'. Failing..."
             exit 1
           fi
 
