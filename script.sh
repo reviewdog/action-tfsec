@@ -52,12 +52,11 @@ echo "::group:: Installing kics (${INPUT_KICS_VERSION}) ... https://github.com/C
     --location "${url}" \
     --output kics_${kics_version}_${os}_${arch}.tar.gz
   tar -xvzf kics_${kics_version}_${os}_${arch}.tar.gz
-  ls
   install kics "${KICS_PATH}"
 echo '::endgroup::'
 
 echo "::group:: Print kics details ..."
-  "${KICS_PATH}/kics" --version
+  "${KICS_PATH}/kics" version
 echo '::endgroup::'
 
 echo '::group:: Running kics with reviewdog 🐶 ...'
@@ -67,8 +66,8 @@ echo '::group:: Running kics with reviewdog 🐶 ...'
   set +Eeuo pipefail
 
   # shellcheck disable=SC2086
-  "${KICS_PATH}/kics" --format=json ${INPUT_KICS_FLAGS:-} . \
-    | jq -r -f "${GITHUB_ACTION_PATH}/to-rdjson.jq" \
+  "${KICS_PATH}/kics" --path . --output-name kics --output-path . --report-formats json ${INPUT_KICS_FLAGS:-} 
+  jq -r -f "${GITHUB_ACTION_PATH}/to-rdjson.jq" kics.json \
     |  "${REVIEWDOG_PATH}/reviewdog" -f=rdjson \
         -name="kics" \
         -reporter="${INPUT_REPORTER}" \
