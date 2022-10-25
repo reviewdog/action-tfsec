@@ -24,10 +24,11 @@ echo '::endgroup::'
   pip3 install lastversion
   lastversion Checkmarx/kics --assets -d --verbose
   tar -xvf kics*.tar.gz
+  ls
 echo '::endgroup::'
 
 echo "::group:: Print kics details ..."
-  "kics" --version
+  "./kics" --version
 echo '::endgroup::'
 
 echo '::group:: Running kics with reviewdog 🐶 ...'
@@ -37,7 +38,7 @@ echo '::group:: Running kics with reviewdog 🐶 ...'
   set +Eeuo pipefail
 
   # shellcheck disable=SC2086
-  "kics" --format=json ${INPUT_KICS_FLAGS:-} . \
+  "./kics" --format=json ${INPUT_KICS_FLAGS:-} . \
     | jq -r -f "${GITHUB_ACTION_PATH}/to-rdjson.jq" \
     |  "${REVIEWDOG_PATH}/reviewdog" -f=rdjson \
         -name="kics" \
