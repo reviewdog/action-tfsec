@@ -25,13 +25,15 @@ echo '::endgroup::'
   lastversion Checkmarx/kics --assets -d --verbose
   tar -xvf kics*.tar.gz
   ver=$(lastversion Checkmarx/kics)
-  mv kics-${ver} kics
+  cd kics-${ver}
+  make build
   chmod +x kics
+  mv bin/kics ~
 echo '::endgroup::'
 
 echo "::group:: Print kics details ..."
   ls
-  "kics" --version
+  "./kics" --version
 echo '::endgroup::'
 
 echo '::group:: Running kics with reviewdog 🐶 ...'
