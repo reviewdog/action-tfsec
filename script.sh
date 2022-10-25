@@ -24,7 +24,8 @@ echo '::endgroup::'
   pip3 install lastversion
   lastversion Checkmarx/kics --assets -d --verbose
   tar -xvf kics*.tar.gz
-  mv kics-* kics
+  ver=$(lastversion Checkmarx/kics)
+  mv kics-${ver} kics
   ls
 echo '::endgroup::'
 
