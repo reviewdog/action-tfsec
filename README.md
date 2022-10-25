@@ -81,6 +81,11 @@ Optional. List of arguments to send to kics.
 For the output to be parsable by reviewdog [`--format=checkstyle` is enforced](./entrypoint.sh).
 The default is ``.
 
+### `kics_scan_path`
+
+Optional. The path of the files or directory to run the scan on.
+The default is `.`.
+
 ## Outputs
 
 ## `kics-return-code`
@@ -116,6 +121,7 @@ jobs:
           fail_on_error: true # Fail action if errors are found
           flags: -tee # Add debug flag to reviewdog
           kics_flags: "" # Optional
+          kics_scan_path: "." #Optional
 ```
 
 ## Development
