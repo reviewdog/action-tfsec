@@ -41,12 +41,12 @@ echo "::group:: Installing kics (${INPUT_KICS_VERSION}) ... https://github.com/C
   test ! -d "${KICS_PATH}" && install -d "${KICS_PATH}"
 
   if [[ "${INPUT_KICS_VERSION}" = "latest" ]]; then
-    kics_version=$(curl --silent -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${INPUT_GITHUB_TOKEN}" https://api.github.com/repos/aquasecurity/kics/releases/latest | jq -r .tag_name)
+    kics_version=$(curl --silent -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${INPUT_GITHUB_TOKEN}" https://api.github.com/repos/Checkmarx/kics/releases/latest | jq -r .tag_name)
   else
     kics_version=${INPUT_KICS_VERSION}
   fi
   binary="kics"
-  url="https://github.com/Checkmarx/kics/releases/download/${kics_version}/kics_${kics_version}_${os}_${arch}.tar.gz"
+  url="https://github.com/Checkmarx/kics/releases/download/v${kics_version}/kics_${kics_version}_${os}_${arch}.tar.gz"
 
   curl --silent --show-error --fail \
     --location "${url}" \
