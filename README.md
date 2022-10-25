@@ -1,13 +1,13 @@
-# GitHub Action: Run KICS with reviewdog
+# GitHub Action: Run kics with reviewdog
 
-[![Tests](https://github.com/reviewdog/action-KICS/workflows/Tests/badge.svg)](https://github.com/reviewdog/action-KICS/actions?query=workflow%3ATests)
-[![Lint](https://github.com/reviewdog/action-KICS/workflows/Lint/badge.svg)](https://github.com/reviewdog/action-KICS/actions?query=workflow%Lint)
-[![depup](https://github.com/reviewdog/action-KICS/workflows/depup/badge.svg)](https://github.com/reviewdog/action-KICS/actions?query=workflow%3Adepup)
-[![release](https://github.com/reviewdog/action-KICS/workflows/release/badge.svg)](https://github.com/reviewdog/action-KICS/actions?query=workflow%3Arelease)
-[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/reviewdog/action-KICS?logo=github&sort=semver)](https://github.com/reviewdog/action-KICS/releases)
+[![Tests](https://github.com/karankohli-cf/action-kics/workflows/Tests/badge.svg)](https://github.com/karankohli-cf/action-kics/actions?query=workflow%3ATests)
+[![Lint](https://github.com/karankohli-cf/action-kics/workflows/Lint/badge.svg)](https://github.com/karankohli-cf/action-kics/actions?query=workflow%Lint)
+[![depup](https://github.com/karankohli-cf/action-kics/workflows/depup/badge.svg)](https://github.com/karankohli-cf/action-kics/actions?query=workflow%3Adepup)
+[![release](https://github.com/karankohli-cf/action-kics/workflows/release/badge.svg)](https://github.com/karankohli-cf/action-kics/actions?query=workflow%3Arelease)
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/karankohli-cf/action-kics?logo=github&sort=semver)](https://github.com/karankohli-cf/action-kics/releases)
 [![action-bumpr supported](https://img.shields.io/badge/bumpr-supported-ff69b4?logo=github&link=https://github.com/haya14busa/action-bumpr)](https://github.com/haya14busa/action-bumpr)
 
-This action runs [KICS](https://github.com/Checkmarx/kics) with
+This action runs [kics](https://github.com/Checkmarx/kics) with
 [reviewdog](https://github.com/reviewdog/reviewdog) on pull requests
 to enforce best practices.
 
@@ -72,20 +72,20 @@ The default is ``.
 
 ### `KICS_version`
 
-Optional. The version of KICS to install.
+Optional. The version of kics to install.
 The default is `latest`.
 
 ### `KICS_flags`
 
-Optional. List of arguments to send to KICS.
+Optional. List of arguments to send to kics.
 For the output to be parsable by reviewdog [`--format=checkstyle` is enforced](./entrypoint.sh).
 The default is ``.
 
 ## Outputs
 
-## `KICS-return-code`
+## `kics-return-code`
 
-The `KICS` command return code.
+The `kics` command return code.
 
 ## `reviewdog-return-code`
 
@@ -94,19 +94,19 @@ The `reviewdog` command return code.
 ## Example usage
 
 ```yml
-name: KICS
+name: kics
 on: [pull_request]
 jobs:
-  KICS:
-    name: runner / KICS
+  kics:
+    name: runner / kics
     runs-on: ubuntu-latest # Windows and macOS are also supported
 
     steps:
       - name: Clone repo
         uses: actions/checkout@v2
 
-      - name: Run KICS with reviewdog output on the PR
-        uses: reviewdog/action-KICS@master
+      - name: Run kics with reviewdog output on the PR
+        uses: karankohli-cf/action-kics@master
         with:
           github_token: ${{ secrets.github_token }}
           working_directory: my_directory # Change working directory
