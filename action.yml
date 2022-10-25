@@ -43,7 +43,7 @@ inputs:
     description: |
       The version of KICS to install.
       Default is latest.
-    default: "1.5.1"
+    default: "latest"
     required: false
   kics_flags:
     description: |

@@ -11,24 +11,8 @@ set -Eeuo pipefail
 cd "${GITHUB_WORKSPACE}/${INPUT_WORKING_DIRECTORY}" || exit
 
 echo '::group::Preparing ...'
-  unameOS="$(uname -s)"
-  case "${unameOS}" in
-    Linux*)     os=linux;;
-    Darwin*)    os=darwin;;
-    CYGWIN*)    os=windows;;
-    MINGW*)     os=windows;;
-    MSYS_NT*)   os=windows;;
-    *)          echo "Unknown system: ${unameOS}" && exit 1
-  esac
-
-  unameArch="$(uname -m)"
-  case "${unameArch}" in
-    x86*)      arch=arm64;;
-    *)         echo "Unsupported architecture: ${unameArch}. Only ARM64 is supported by kics" && exit 1
-    esac
-
   TEMP_PATH="$(mktemp -d)"
-  echo "Detected ${os} running on ${arch}, will install tools in ${TEMP_PATH}"
+  echo "will install tools in ${TEMP_PATH}"
   REVIEWDOG_PATH="${TEMP_PATH}/reviewdog"
   KICS_PATH="${TEMP_PATH}/kics"
 echo '::endgroup::'
@@ -37,25 +21,13 @@ echo "::group::🐶 Installing reviewdog (${REVIEWDOG_VERSION}) ... https://gith
   curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b "${REVIEWDOG_PATH}" "${REVIEWDOG_VERSION}" 2>&1
 echo '::endgroup::'
 
-echo "::group:: Installing kics (${INPUT_KICS_VERSION}) ... https://github.com/Checkmarx/kics"
-  test ! -d "${KICS_PATH}" && install -d "${KICS_PATH}"
-
-  if [[ "${INPUT_KICS_VERSION}" = "latest" ]]; then
-    kics_version=$(curl --silent -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${INPUT_GITHUB_TOKEN}" https://api.github.com/repos/Checkmarx/kics/releases/latest | jq -r .tag_name)
-  else
-    kics_version=${INPUT_KICS_VERSION}
-  fi
-  url="https://github.com/Checkmarx/kics/releases/download/v${kics_version}/kics_${kics_version}_${os}_${arch}.tar.gz"
-
-  curl --silent --show-error --fail \
-    --location "${url}" \
-    --output "kics_${kics_version}_${os}_${arch}.tar.gz"
-  tar -xvzf kics_${kics_version}_${os}_${arch}.tar.gz
-  install kics "${KICS_PATH}"
+  pip3 install lastversion
+  lastversion Checkmarx/kics --assets -d --verbose
+  tar -xvf kics*.tar.gz
 echo '::endgroup::'
 
 echo "::group:: Print kics details ..."
-  "${KICS_PATH}/kics" --version
+  "kics" --version
 echo '::endgroup::'
 
 echo '::group:: Running kics with reviewdog 🐶 ...'
@@ -65,7 +37,7 @@ echo '::group:: Running kics with reviewdog 🐶 ...'
   set +Eeuo pipefail
 
   # shellcheck disable=SC2086
-  "${KICS_PATH}/kics" --format=json ${INPUT_KICS_FLAGS:-} . \
+  "kics" --format=json ${INPUT_KICS_FLAGS:-} . \
     | jq -r -f "${GITHUB_ACTION_PATH}/to-rdjson.jq" \
     |  "${REVIEWDOG_PATH}/reviewdog" -f=rdjson \
         -name="kics" \
