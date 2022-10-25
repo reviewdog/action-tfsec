@@ -34,10 +34,10 @@ jobs:
           kics_return="${{ steps.test.outputs.kics-return-code }}"
           reviewdog_return="${{ steps.test.outputs.reviewdog-return-code }}"
 
-          if [[ "$kics_return" -eq 1 ]]; then
+          if [[ "$kics_return" -eq 0 ]]; then
             echo "kics correctly returned failure ${kics_return}"
           else
-            echo "kics returned ${kics_return}, expected '1'. Failing..."
+            echo "kics returned ${kics_return}, expected '0'. Failing..."
             exit 1
           fi
 
@@ -72,10 +72,10 @@ jobs:
           kics_return="${{ steps.test.outputs.kics-return-code }}"
           reviewdog_return="${{ steps.test.outputs.reviewdog-return-code }}"
 
-          if [[ "$kics_return" -eq 1 ]]; then
+          if [[ "$kics_return" -eq 0 ]]; then
             echo "kics correctly returned failure ${kics_return}"
           else
-            echo "kics returned ${kics_return}, expected '1'. Failing..."
+            echo "kics returned ${kics_return}, expected '0'. Failing..."
             exit 1
           fi
 
@@ -112,10 +112,10 @@ jobs:
           kics_return="${{ steps.test.outputs.kics-return-code }}"
           reviewdog_return="${{ steps.test.outputs.reviewdog-return-code }}"
 
-          if [[ "$kics_return" -eq 1 ]]; then
+          if [[ "$kics_return" -eq 0 ]]; then
             echo "kics correctly returned failure ${kics_return}"
           else
-            echo "kics returned ${kics_return}, expected '1'. Failing..."
+            echo "kics returned ${kics_return}, expected '0'. Failing..."
             exit 1
           fi
 
@@ -152,10 +152,10 @@ jobs:
           kics_return="${{ steps.test.outputs.kics-return-code }}"
           reviewdog_return="${{ steps.test.outputs.reviewdog-return-code }}"
 
-          if [[ "$kics_return" -eq 1 ]]; then
+          if [[ "$kics_return" -eq 0 ]]; then
             echo "kics correctly returned failure ${kics_return}"
           else
-            echo "kics returned ${kics_return}, expected '1'. Failing..."
+            echo "kics returned ${kics_return}, expected '0'. Failing..."
             exit 1
           fi
 
