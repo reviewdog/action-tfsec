@@ -10,7 +10,7 @@
 | .files[] = {
   message: .description,
   code: {
-      value: .files[].similarity_id,
+      value: .query_name,
       url: .query_url,
   },
   location: {
