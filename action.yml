@@ -65,7 +65,7 @@ outputs:
     value: ${{ steps.kics.outputs.kics-return-code }}
   reviewdog-return-code:
     description: "reviewdog command return code"
-    value: ${{ steps.kicsoutputs.reviewdog-return-code }}
+    value: ${{ steps.kics.outputs.reviewdog-return-code }}
 
 runs:
   using: "composite"
