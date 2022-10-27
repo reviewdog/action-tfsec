@@ -81,7 +81,7 @@ echo '::group:: Running kics with reviewdog 🐶 ...'
   if [[ "${ret}" -gt 0 ]]; then
   ret=1
   fi
-  kics_return="${ret}" reviewdog_return="${rd_ret}" exit_code=$?
+  kics_return="${ret}" reviewdog_return="${rd_ret}" exit_code=${rd_ret}
   echo "::set-output name=kics-return-code::${kics_return}"
   echo "::set-output name=reviewdog-return-code::${reviewdog_return}"
 echo '::endgroup::'
