@@ -24,7 +24,7 @@ curl -sfL 'https://raw.githubusercontent.com/Checkmarx/kics/master/install.sh' |
 # echo '::endgroup::'
 
 echo "::group:: Print kics details ..."
-  "kics" version
+  kics version
 echo '::endgroup::'
 
 echo '::group:: Running kics with reviewdog 🐶 ...'
@@ -34,7 +34,8 @@ echo '::group:: Running kics with reviewdog 🐶 ...'
   set +Eeuo pipefail
 
   # shellcheck disable=SC2086
-  kics_exit=$("kics" scan --path ${INPUT_KICS_SCAN_PATH} --output-name kics --output-path . --report-formats json ${INPUT_KICS_FLAGS:-})
+  kics scan
+  kics_exit=$(kics scan --path ${INPUT_KICS_SCAN_PATH} --output-name kics --output-path . --report-formats json ${INPUT_KICS_FLAGS:-})
   jq -r -f "${GITHUB_ACTION_PATH}/to-rdjson.jq" kics.json \
     |  "${REVIEWDOG_PATH}/reviewdog" -f=rdjson \
         -name="kics" \
