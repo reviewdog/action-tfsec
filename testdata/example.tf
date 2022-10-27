@@ -18,7 +18,7 @@ resource "aws_security_group_rule" "example_rule" {
 
   type      = "ingress"
   from_port = "0"
-  to_port   = "65535"
+  to_port   = "65531"
   protocol  = "tcp"
 
   cidr_blocks      = ["0.0.0.0/0"]
