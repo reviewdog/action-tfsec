@@ -67,7 +67,8 @@ echo '::group:: Running kics with reviewdog 🐶 ...'
 
   # shellcheck disable=SC2086
   export KICS_QUERIES_PATH=./assets
-  kics_exit=$("${KICS_PATH}/kics" scan --path ${INPUT_KICS_SCAN_PATH} --output-name kics --output-path . --report-formats json ${INPUT_KICS_FLAGS:-})
+  "${KICS_PATH}/kics" scan --path ${INPUT_KICS_SCAN_PATH} --output-name kics --output-path . --report-formats json ${INPUT_KICS_FLAGS:-} || ret=$?
+
   jq -r -f "${GITHUB_ACTION_PATH}/to-rdjson.jq" kics.json \
     |  "${REVIEWDOG_PATH}/reviewdog" -f=rdjson \
         -name="kics" \
@@ -77,7 +78,7 @@ echo '::group:: Running kics with reviewdog 🐶 ...'
         -filter-mode="${INPUT_FILTER_MODE}" \
         ${INPUT_FLAGS}
 
-  kics_return="${kics_exit}" reviewdog_return="${PIPESTATUS[1]}" exit_code=$?
+  kics_return="${ret}" reviewdog_return="${PIPESTATUS[1]}" exit_code=$?
   echo "::set-output name=kics-return-code::${kics_return}"
   echo "::set-output name=reviewdog-return-code::${reviewdog_return}"
 echo '::endgroup::'
