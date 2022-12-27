@@ -80,8 +80,8 @@ echo '::group:: Running tfsec with reviewdog 🐶 ...'
         ${INPUT_FLAGS}
 
   tfsec_return="${PIPESTATUS[0]}" reviewdog_return="${PIPESTATUS[2]}" exit_code=$?
-  echo "tfsec-return-code=${tfsec_return}" >> $GITHUB_OUTPUT
-  echo "reviewdog-return-code=${reviewdog_return}" >> $GITHUB_OUTPUT
+  echo "tfsec-return-code=${tfsec_return}" >> "$GITHUB_OUTPUT"
+  echo "reviewdog-return-code=${reviewdog_return}" >> "$GITHUB_OUTPUT"
 echo '::endgroup::'
 
 exit "${exit_code}"
