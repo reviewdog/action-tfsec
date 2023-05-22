@@ -44,6 +44,11 @@ Optional. Report level for reviewdog [`info`,`warning`,`error`].
 It's same as `-level` flag of reviewdog.
 The default is `error`.
 
+### `name`
+
+Optional. Name of the report as to how it will show up in the GitHub UI.
+The default is `tfsec`.
+
 ### `reporter`
 
 Optional. Reporter of reviewdog command [`github-pr-check`,`github-pr-review`].
