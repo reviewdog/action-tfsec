@@ -17,6 +17,12 @@ inputs:
     description: 'Report level for reviewdog [info,warning,error]'
     default: 'error'
     required: false
+  tool_name:
+    description: |
+      The name of the tool being used. This name is used for the report name.
+      Default is tfsec.
+    default: 'tfsec'
+    required: false
   reporter:
     description: |
       Reporter of reviewdog command [github-pr-check,github-pr-review].
