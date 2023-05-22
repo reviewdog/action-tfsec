@@ -17,9 +17,9 @@ inputs:
     description: 'Report level for reviewdog [info,warning,error]'
     default: 'error'
     required: false
-  tool_name:
+  name:
     description: |
-      The name of the tool being used. This name is used for the report name.
+      The name for the report as it will show up in GitHub's interface.
       Default is tfsec.
     default: 'tfsec'
     required: false
@@ -83,7 +83,7 @@ runs:
         INPUT_WORKING_DIRECTORY: ${{ inputs.working_directory }}
         INPUT_LEVEL: ${{ inputs.level }}
         INPUT_REPORTER: ${{ inputs.reporter }}
-        INPUT_TOOL_NAME: ${{ inputs.tool_name }}
+        INPUT_NAME: ${{ inputs.name }}
         INPUT_FILTER_MODE: ${{ inputs.filter_mode }}
         INPUT_FAIL_ON_ERROR: ${{ inputs.fail_on_error }}
         INPUT_FLAGS: ${{ inputs.flags }}
