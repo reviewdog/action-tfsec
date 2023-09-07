@@ -44,9 +44,9 @@ Optional. Report level for reviewdog [`info`,`warning`,`error`].
 It's same as `-level` flag of reviewdog.
 The default is `error`.
 
-### `name`
+### `tool_name`
 
-Optional. Name of the report as to how it will show up in the GitHub UI.
+Optional. Name of the tool being used. This controls how it will show up in the GitHub UI.
 The default is `tfsec`.
 
 ### `reporter`
