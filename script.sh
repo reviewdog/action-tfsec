@@ -70,6 +70,11 @@ echo '::group:: Running tfsec with reviewdog 🐶 ...'
 
   # shellcheck disable=SC2086
   "${TFSEC_PATH}/tfsec" --format=json ${INPUT_TFSEC_FLAGS:-} . \
+    | {
+      # workaround for #95
+      # remove "tfsec is joining the Trivy family" banner
+      perl -E 'undef $/; my $txt = <>; $txt =~ s/^[^{]*//m; print $txt'
+    } \
     | jq -r -f "${GITHUB_ACTION_PATH}/to-rdjson.jq" \
     |  "${REVIEWDOG_PATH}/reviewdog" -f=rdjson \
         -name="${INPUT_TOOL_NAME}" \
@@ -79,7 +84,7 @@ echo '::group:: Running tfsec with reviewdog 🐶 ...'
         -filter-mode="${INPUT_FILTER_MODE}" \
         ${INPUT_FLAGS}
 
-  tfsec_return="${PIPESTATUS[0]}" reviewdog_return="${PIPESTATUS[2]}" exit_code=$?
+  tfsec_return="${PIPESTATUS[0]}" reviewdog_return="${PIPESTATUS[3]}" exit_code=$?
   echo "tfsec-return-code=${tfsec_return}" >> "$GITHUB_OUTPUT"
   echo "reviewdog-return-code=${reviewdog_return}" >> "$GITHUB_OUTPUT"
 echo '::endgroup::'
