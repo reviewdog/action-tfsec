@@ -128,8 +128,9 @@ jobs:
 
   test-operating-systems:
     strategy:
-       matrix:
-         platform: [ubuntu-latest, macos-latest, windows-latest]
+      fail-fast: false
+      matrix:
+        platform: [ubuntu-latest, macos-latest, windows-latest]
     name: tfsec (${{ matrix.platform }})
     runs-on: ${{ matrix.platform }}
 
