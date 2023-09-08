@@ -77,7 +77,7 @@ echo '::group:: Running tfsec with reviewdog 🐶 ...'
     } \
     | jq -r -f "${GITHUB_ACTION_PATH}/to-rdjson.jq" \
     |  "${REVIEWDOG_PATH}/reviewdog" -f=rdjson \
-        -name="tfsec" \
+        -name="${INPUT_TOOL_NAME}" \
         -reporter="${INPUT_REPORTER}" \
         -level="${INPUT_LEVEL}" \
         -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
