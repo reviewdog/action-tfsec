@@ -43,7 +43,7 @@ inputs:
     description: |
       The version of tfsec to install.
       Default is latest.
-    default: 'latest'
+    default: 'v1.28.1'
     required: false
   tfsec_flags:
     description: |
