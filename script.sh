@@ -24,7 +24,8 @@ echo '::group::Preparing ...'
   unameArch="$(uname -m)"
   case "${unameArch}" in
     x86*)      arch=amd64;;
-    *)         echo "Unsupported architecture: ${unameArch}. Only AMD64 is supported by tfsec" && exit 1
+    arm64)     arch=arm64;;
+    *)         echo "Unsupported architecture: ${unameArch}. Only AMD64 and ARM64 are supported by the action" && exit 1
     esac
 
   TEMP_PATH="$(mktemp -d)"
@@ -40,13 +41,14 @@ echo '::endgroup::'
 echo "::group:: Installing tfsec (${INPUT_TFSEC_VERSION}) ... https://github.com/aquasecurity/tfsec"
   test ! -d "${TFSEC_PATH}" && install -d "${TFSEC_PATH}"
 
-  if [[ "${INPUT_TFSEC_VERSION}" = "latest" ]]; then
-    tfsec_version=$(curl --silent -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${INPUT_GITHUB_TOKEN}" https://api.github.com/repos/aquasecurity/tfsec/releases/latest | jq -r .tag_name)
-  else
-    tfsec_version=${INPUT_TFSEC_VERSION}
-  fi
   binary="tfsec"
-  url="https://github.com/aquasecurity/tfsec/releases/download/${tfsec_version}/tfsec-${os}-${arch}"
+  if [[ "${INPUT_TFSEC_VERSION}" = "latest" ]]; then
+    # latest release is available on this url.
+    # document: https://docs.github.com/en/repositories/releasing-projects-on-github/linking-to-releases
+    url="https://github.com/aquasecurity/tfsec/releases/latest/download/tfsec-${os}-${arch}"
+  else
+    url="https://github.com/aquasecurity/tfsec/releases/download/${INPUT_TFSEC_VERSION}/tfsec-${os}-${arch}"
+  fi
   if [[ "${os}" = "windows" ]]; then
     url+=".exe"
     binary+=".exe"
@@ -70,16 +72,21 @@ echo '::group:: Running tfsec with reviewdog 🐶 ...'
 
   # shellcheck disable=SC2086
   "${TFSEC_PATH}/tfsec" --format=json ${INPUT_TFSEC_FLAGS:-} . \
+    | {
+      # workaround for #95
+      # remove "tfsec is joining the Trivy family" banner
+      perl -E 'undef $/; my $txt = <>; $txt =~ s/^[^{]*//m; print $txt'
+    } \
     | jq -r -f "${GITHUB_ACTION_PATH}/to-rdjson.jq" \
     |  "${REVIEWDOG_PATH}/reviewdog" -f=rdjson \
-        -name="tfsec" \
+        -name="${INPUT_TOOL_NAME}" \
         -reporter="${INPUT_REPORTER}" \
         -level="${INPUT_LEVEL}" \
         -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
         -filter-mode="${INPUT_FILTER_MODE}" \
         ${INPUT_FLAGS}
 
-  tfsec_return="${PIPESTATUS[0]}" reviewdog_return="${PIPESTATUS[2]}" exit_code=$?
+  tfsec_return="${PIPESTATUS[0]}" reviewdog_return="${PIPESTATUS[3]}" exit_code=$?
   echo "tfsec-return-code=${tfsec_return}" >> "$GITHUB_OUTPUT"
   echo "reviewdog-return-code=${reviewdog_return}" >> "$GITHUB_OUTPUT"
 echo '::endgroup::'

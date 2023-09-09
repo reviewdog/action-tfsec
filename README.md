@@ -44,6 +44,11 @@ Optional. Report level for reviewdog [`info`,`warning`,`error`].
 It's same as `-level` flag of reviewdog.
 The default is `error`.
 
+### `tool_name`
+
+Optional. Name of the tool being used. This controls how it will show up in the GitHub UI.
+The default is `tfsec`.
+
 ### `reporter`
 
 Optional. Reporter of reviewdog command [`github-pr-check`,`github-pr-review`].
@@ -103,7 +108,7 @@ jobs:
 
     steps:
       - name: Clone repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Run tfsec with reviewdog output on the PR
         uses: reviewdog/action-tfsec@master
