@@ -41,13 +41,14 @@ echo '::endgroup::'
 echo "::group:: Installing tfsec (${INPUT_TFSEC_VERSION}) ... https://github.com/aquasecurity/tfsec"
   test ! -d "${TFSEC_PATH}" && install -d "${TFSEC_PATH}"
 
-  if [[ "${INPUT_TFSEC_VERSION}" = "latest" ]]; then
-    tfsec_version=$(curl --silent -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${INPUT_GITHUB_TOKEN}" https://api.github.com/repos/aquasecurity/tfsec/releases/latest | jq -r .tag_name)
-  else
-    tfsec_version=${INPUT_TFSEC_VERSION}
-  fi
   binary="tfsec"
-  url="https://github.com/aquasecurity/tfsec/releases/download/${tfsec_version}/tfsec-${os}-${arch}"
+  if [[ "${INPUT_TFSEC_VERSION}" = "latest" ]]; then
+    # latest release is available on this url.
+    # document: https://docs.github.com/en/repositories/releasing-projects-on-github/linking-to-releases
+    url="https://github.com/aquasecurity/tfsec/releases/latest/download/tfsec-${os}-${arch}"
+  else
+    url="https://github.com/aquasecurity/tfsec/releases/download/${INPUT_TFSEC_VERSION}/tfsec-${os}-${arch}"
+  fi
   if [[ "${os}" = "windows" ]]; then
     url+=".exe"
     binary+=".exe"
