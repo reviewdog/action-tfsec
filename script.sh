@@ -24,7 +24,8 @@ echo '::group::Preparing ...'
   unameArch="$(uname -m)"
   case "${unameArch}" in
     x86*)      arch=amd64;;
-    *)         echo "Unsupported architecture: ${unameArch}. Only AMD64 is supported by tfsec" && exit 1
+    arm64)     arch=arm64;;
+    *)         echo "Unsupported architecture: ${unameArch}. Only AMD64 and ARM64 are supported by the action" && exit 1
     esac
 
   TEMP_PATH="$(mktemp -d)"

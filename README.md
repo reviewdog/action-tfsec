@@ -108,7 +108,7 @@ jobs:
 
     steps:
       - name: Clone repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Run tfsec with reviewdog output on the PR
         uses: reviewdog/action-tfsec@master
