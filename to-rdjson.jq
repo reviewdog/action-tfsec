@@ -19,7 +19,7 @@
         },
       }
     },
-    severity: (if .severity | startswith("HIGH") then
+    severity: (if .severity | startswith("CRITICAL") then
               "ERROR"
             elif .severity | startswith("MEDIUM") then
               "WARNING"
