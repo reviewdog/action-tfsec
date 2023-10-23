@@ -21,6 +21,8 @@
     },
     severity: (if .severity | startswith("CRITICAL") then
               "ERROR"
+            elif .severity | startswith("HIGH") then
+              "ERROR"              
             elif .severity | startswith("MEDIUM") then
               "WARNING"
             elif .severity | startswith("LOW") then
