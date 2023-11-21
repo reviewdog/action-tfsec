@@ -1,5 +1,5 @@
-name: 'Run tfsec with reviewdog'
-description: '🐶 Run tfsec with reviewdog on pull requests to enforce security best practices'
+name: 'Run trivy with reviewdog'
+description: '🐶 Run trivy with reviewdog on pull requests to enforce security best practices'
 author: 'vlaaaaaaad (reviewdog)'
 
 inputs:
@@ -20,8 +20,8 @@ inputs:
   tool_name:
     description: |
       The name for the report as it will show up in GitHub's interface.
-      Default is tfsec.
-    default: 'tfsec'
+      Default is trivy.
+    default: 'trivy'
     required: false
   reporter:
     description: |
@@ -45,33 +45,33 @@ inputs:
     description: 'Additional reviewdog flags'
     default: ''
     required: false
-  tfsec_version:
+  trivy_version:
     description: |
-      The version of tfsec to install.
+      The version of trivy to install.
       Default is latest.
     default: 'latest'
     required: false
-  tfsec_flags:
+  trivy_flags:
     description: |
-      List of arguments to send to tfsec
+      List of arguments to send to trivy
       For the output to be parsable by reviewdog --format=checkstyle is enforced
       Default is blank.
     default: ''
     required: false
 
 outputs:
-  tfsec-return-code:
-    description: 'tfsec command return code'
-    value: ${{ steps.tfsec.outputs.tfsec-return-code }}
+  trivy-return-code:
+    description: 'trivy command return code'
+    value: ${{ steps.trivy.outputs.trivy-return-code }}
   reviewdog-return-code:
     description: 'reviewdog command return code'
-    value: ${{ steps.tfsec.outputs.reviewdog-return-code }}
+    value: ${{ steps.trivy.outputs.reviewdog-return-code }}
 
 runs:
   using: 'composite'
   steps:
     - run: $GITHUB_ACTION_PATH/script.sh
-      id: tfsec
+      id: trivy
       shell: bash
       env:
         # We may want to allow specifying reviewdog version as
@@ -87,8 +87,8 @@ runs:
         INPUT_FILTER_MODE: ${{ inputs.filter_mode }}
         INPUT_FAIL_ON_ERROR: ${{ inputs.fail_on_error }}
         INPUT_FLAGS: ${{ inputs.flags }}
-        INPUT_TFSEC_VERSION: ${{ inputs.tfsec_version }}
-        INPUT_TFSEC_FLAGS: ${{ inputs.tfsec_flags }}
+        INPUT_TRIVY_VERSION: ${{ inputs.trivy_version }}
+        INPUT_TRIVY_FLAGS: ${{ inputs.trivy_flags }}
 
 branding:
   icon: 'edit'
