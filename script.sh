@@ -46,7 +46,7 @@ echo '::endgroup::'
 echo "::group:: Installing trivy (${INPUT_TRIVY_VERSION}) ... https://github.com/aquasecurity/trivy"
   test ! -d "${TRIVY_PATH}" && install -d "${TRIVY_PATH}"
 
-  binary="trivy"
+  archive="trivy.${archive_extension}"
   if [[ "${INPUT_TRIVY_VERSION}" = "latest" ]]; then
     # latest release is available on this url.
     # document: https://docs.github.com/en/repositories/releasing-projects-on-github/linking-to-releases
@@ -62,11 +62,11 @@ echo "::group:: Installing trivy (${INPUT_TRIVY_VERSION}) ... https://github.com
 
   curl --silent --show-error --fail \
     --location "${url}" \
-    --output "${binary}"
-  if [[ "${os}" = "windows" ]]; then
-    unzip "${binary}"
+    --output "${archive}"
+  if [[ "${os}" = "Windows" ]]; then
+    unzip "${archive}"
   else
-    tar -xzf "${binary}"
+    tar -xzf "${archive}"
   fi
   install trivy "${TRIVY_PATH}"
 echo '::endgroup::'
