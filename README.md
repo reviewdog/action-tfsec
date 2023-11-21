@@ -1,4 +1,4 @@
-# GitHub Action: Run tfsec with reviewdog
+# GitHub Action: Run trivy with reviewdog
 
 [![Tests](https://github.com/reviewdog/action-tfsec/workflows/Tests/badge.svg)](https://github.com/reviewdog/action-tfsec/actions?query=workflow%3ATests)
 [![Lint](https://github.com/reviewdog/action-tfsec/workflows/Lint/badge.svg)](https://github.com/reviewdog/action-tfsec/actions?query=workflow%Lint)
@@ -7,7 +7,7 @@
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/reviewdog/action-tfsec?logo=github&sort=semver)](https://github.com/reviewdog/action-tfsec/releases)
 [![action-bumpr supported](https://img.shields.io/badge/bumpr-supported-ff69b4?logo=github&link=https://github.com/haya14busa/action-bumpr)](https://github.com/haya14busa/action-bumpr)
 
-This action runs [tfsec](https://github.com/liamg/tfsec) with
+This action runs [trivy](https://github.com/aquasecurity/trivy) with
 [reviewdog](https://github.com/reviewdog/reviewdog) on pull requests
 to enforce best practices.
 
@@ -47,7 +47,7 @@ The default is `error`.
 ### `tool_name`
 
 Optional. Name of the tool being used. This controls how it will show up in the GitHub UI.
-The default is `tfsec`.
+The default is `trivy`.
 
 ### `reporter`
 
@@ -75,22 +75,22 @@ See [reviewdog documentation for exit codes](https://github.com/reviewdog/review
 Optional. Additional reviewdog flags. Useful for debugging errors, when it can be set to `-tee`.
 The default is ``.
 
-### `tfsec_version`
+### `trivy_version`
 
 Optional. The version of tfsec to install.
 The default is `latest`.
 
-### `tfsec_flags`
+### `trivy_flags`
 
-Optional. List of arguments to send to tfsec.
+Optional. List of arguments to send to trivy.
 For the output to be parsable by reviewdog [`--format=checkstyle` is enforced](./entrypoint.sh).
 The default is ``.
 
 ## Outputs
 
-## `tfsec-return-code`
+## `trivy-return-code`
 
-The `tfsec` command return code.
+The `trivy` command return code.
 
 ## `reviewdog-return-code`
 
@@ -99,19 +99,19 @@ The `reviewdog` command return code.
 ## Example usage
 
 ```yml
-name: tfsec
+name: trivy
 on: [pull_request]
 jobs:
-  tfsec:
-    name: runner / tfsec
+  trivy:
+    name: runner / trivy
     runs-on: ubuntu-latest # Windows and macOS are also supported
 
     steps:
       - name: Clone repo
         uses: actions/checkout@v4
 
-      - name: Run tfsec with reviewdog output on the PR
-        uses: reviewdog/action-tfsec@master
+      - name: Run trivy with reviewdog output on the PR
+        uses: reviewdog/action-trivy@master
         with:
           github_token: ${{ secrets.github_token }}
           working_directory: my_directory # Change working directory
@@ -120,7 +120,7 @@ jobs:
           filter_mode: nofilter # Check all files, not just the diff
           fail_on_error: true # Fail action if errors are found
           flags: -tee # Add debug flag to reviewdog
-          tfsec_flags: "" # Optional
+          trivy_flags: "" # Optional
 ```
 
 ## Development
