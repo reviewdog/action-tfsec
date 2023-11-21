@@ -29,7 +29,7 @@ echo '::group::Preparing ...'
     esac
 
   case "${os}" in 
-    windows)   archive_extension="zip";;
+    Windows)   archive_extension="zip";;
     *)         archive_extension="tar.gz";;
   esac
 
