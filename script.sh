@@ -57,10 +57,8 @@ echo "::group:: Installing trivy (${INPUT_TRIVY_VERSION}) ... https://github.com
   fi
   release_num=${release/#v/}
   url="https://github.com/aquasecurity/trivy/releases/download/${release}/trivy_${release_num}_${os}-${arch}.${archive_extension}"
-  if [[ "${os}" = "windows" ]]; then
-    url+=".exe"
-    binary+=".exe"
-  fi
+  # Echo url for testing
+  echo "Downloading ${url}"
 
   curl --silent --show-error --fail \
     --location "${url}" \
