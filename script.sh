@@ -84,7 +84,7 @@ echo '::group:: Running trivy with reviewdog 🐶 ...'
   set +Eeuo pipefail
 
   # shellcheck disable=SC2086
-  "${TRIVY_PATH}/trivy" --format json ${INPUT_TRIVY_FLAGS:-} config . 2> /dev/null \
+  "${TRIVY_PATH}/trivy" --format json ${INPUT_TRIVY_FLAGS:-} --exit-code 1 config . 2> /dev/null \
     | jq -r -f "${GITHUB_ACTION_PATH}/to-rdjson.jq" \
     |  "${REVIEWDOG_PATH}/reviewdog" -f=rdjson \
         -name="${INPUT_TOOL_NAME}" \
