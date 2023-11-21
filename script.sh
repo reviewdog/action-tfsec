@@ -55,7 +55,7 @@ echo "::group:: Installing trivy (${INPUT_TRIVY_VERSION}) ... https://github.com
   else
     release="${INPUT_TRIVY_VERSION}"
   fi
-  release_num=$(echo $release | sed -e 's/^v//')
+  release_num=${release/#v/}
   url="https://github.com/aquasecurity/trivy/releases/download/${release}/trivy_${release_num}_${os}-${arch}.${archive_extension}"
   if [[ "${os}" = "windows" ]]; then
     url+=".exe"
