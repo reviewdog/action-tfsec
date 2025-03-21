@@ -111,7 +111,7 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Run tfsec with reviewdog output on the PR
-        uses: reviewdog/action-tfsec@master
+        uses: reviewdog/action-tfsec@dbb1b474921bad80f5a650466e0aaa4648d464fc # v1.28.6
         with:
           github_token: ${{ secrets.github_token }}
           working_directory: my_directory # Change working directory
