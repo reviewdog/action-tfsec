@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: haya14busa/action-depup@99f7aecf3e4d06d5a3faf190dae5dc79ac530b5a # v1.6.5
+      - uses: haya14busa/action-depup@a03fa2103b273193becba8cca43a992b9173f5dc # v1.6.7
         id: depup
         with:
           file: action.yml
