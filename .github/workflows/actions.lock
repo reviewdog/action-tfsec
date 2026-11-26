@@ -5,7 +5,7 @@ version: 'v0.0.3'
 workflows:
     '.github/workflows/depup.yml':
         - 'actions/checkout@v7.0.1'
-        - 'peter-evans/create-pull-request@v8.1.1'
+        - 'peter-evans/create-pull-request@v8.1.3'
         - 'reviewdog/action-depup@v1.6.7'
     '.github/workflows/labels.yml':
         - 'actions/checkout@master'
@@ -53,9 +53,9 @@ dependencies:
         commit: 'sha1-27295bcfbcb0c5480e9ab0d3b4b08ce5cd9d3bb9'
         owner_id: 3685876
         repo_id: 160574490
-    'peter-evans/create-pull-request@v8.1.1':
-        ref: 'v8.1.1'
-        commit: 'sha1-5f6978faf089d4d20b00c7766989d076bb2fc7f1'
+    'peter-evans/create-pull-request@v8.1.3':
+        ref: 'v8.1.3'
+        commit: 'sha1-3ffccacd46053766916f087ce41d627c0b8cf2d1'
         owner_id: 18365890
         repo_id: 197176365
     'reviewdog/action-depup@v1.6.7':
